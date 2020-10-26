@@ -1,1 +1,1 @@
-# gameserv
+# rgamenode api
