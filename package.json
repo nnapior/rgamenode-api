@@ -1,5 +1,5 @@
 {
-  "name": "gameserv",
+  "name": "rgamenode_api",
   "version": "1.0.0",
   "description": "",
   "main": "dist/server.js",
@@ -33,13 +33,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nnapior/gameserv.git"
+    "url": "git+https://github.com/nnapior/rgamenode_api.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nnapior/gameserv/issues"
+    "url": "https://github.com/nnapior/rgamenode_api/issues"
   },
-  "homepage": "https://github.com/nnapior/gameserv#readme"
+  "homepage": "https://github.com/nnapior/rgamenode_api#readme"
 }

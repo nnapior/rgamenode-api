@@ -1,1 +1,1 @@
-# gameserv
+# rGameNode API
