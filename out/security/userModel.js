@@ -7,14 +7,17 @@ var bcrypt_1 = __importDefault(require("bcrypt"));
 // represents a user in the system
 var UserModel = /** @class */ (function () {
     // encrypts password
-    function UserModel(email, password) {
+    function UserModel(userID, email, username, password) {
         var _this = this;
-        this.id = "";
+        this.userID = "";
         this.email = "";
+        this.username = "";
         this._password = "";
         // includes encrypted password
-        this.toObject = function () { return ({ email: _this.email, password: _this.password }); };
+        this.toObject = function () { return ({ userID: _this.userID, email: _this.email, username: _this.username, password: _this.password }); };
+        this.userID = userID;
         this.email = email;
+        this.username = username;
         this.password = password;
     }
     Object.defineProperty(UserModel.prototype, "password", {
@@ -46,7 +49,7 @@ var UserModel = /** @class */ (function () {
     };
     // does not encrypt password, expects already encrypted password
     UserModel.fromObject = function (obj) {
-        var mdl = new UserModel(obj.email, "");
+        var mdl = new UserModel(obj.userID, obj.email, obj.username, "");
         mdl._password = obj.password;
         return mdl;
     };
