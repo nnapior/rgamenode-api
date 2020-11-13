@@ -30,7 +30,7 @@ export class SecurityController {
     // sends a success message to caller on success, or a failure status code on failure
     public register(req: express.Request, res: express.Response, next: express.NextFunction) {
         const user: UserModel = new UserModel(SecurityController.generateUniqueID(), req.body.email, req.body.username, req.body.password);
-        console.log("I havent fucking died yet");
+        console.log("ARE YOU WORKING!!!!!");
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then((userRecord: any) => {
                 console.log("KABOOM!!!!");
