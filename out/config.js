@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// configuration information
+//configuration information 
 exports.Config = {
     serverport: process.env.PORT || 3000,
     secret: process.env.SECRET || "some-secret-goes-here",

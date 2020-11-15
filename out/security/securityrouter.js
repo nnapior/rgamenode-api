@@ -28,7 +28,7 @@ var SecurityRouter = /** @class */ (function (_super) {
         this.expressRouter.get("/authorize", [securityMiddleware_1.SecurityMiddleware.RequireAuth], securityController.authorize);
         this.expressRouter.post("/login", securityController.login);
         this.expressRouter.post("/register", securityController.register);
-        this.expressRouter.post("/changepwd", [securityMiddleware_1.SecurityMiddleware.RequireAuth], securityController.changePwd);
+        //this.expressRouter.post("/changepwd", [SecurityMiddleware.RequireAuth], securityController.changePwd);
     };
     return SecurityRouter;
 }(AppRouter_1.AppRouter));
