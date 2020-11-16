@@ -34,10 +34,10 @@ var SecurityController = /** @class */ (function () {
     // sends a success message to caller on success, or a failure status code on failure
     SecurityController.prototype.register = function (req, res, next) {
         var user = new userModel_1.UserModel(SecurityController.generateUniqueID(), req.body.email, req.body.username, req.body.password);
-        console.log("ARE YOU WORKING!!!!!");
+        //console.log("ARE YOU WORKING!!!!!");
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then(function (userRecord) {
-            console.log("KABOOM!!!!");
+            console.log("logged on or something");
             if (userRecord) {
                 return res.status(400).send({ fn: "register", status: "failure", data: "User Exists" }).end();
             }

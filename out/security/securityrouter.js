@@ -33,4 +33,4 @@ var SecurityRouter = /** @class */ (function (_super) {
     return SecurityRouter;
 }(AppRouter_1.AppRouter));
 exports.SecurityRouter = SecurityRouter;
-//# sourceMappingURL=securityrouter.js.map
+//# sourceMappingURL=securityRouter.js.map

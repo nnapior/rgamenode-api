@@ -25,6 +25,7 @@ var SecurityMiddleware = /** @class */ (function () {
                 try {
                     // if can verify the token, set req.user and pass to next middleware
                     var decoded = jsonwebtoken_1.default.verify(token.toString(), config_1.Config.secret);
+                    //console.log(decoded);
                     req.body.authUser = decoded;
                     next();
                 }
