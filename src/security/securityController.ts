@@ -29,11 +29,9 @@ export class SecurityController {
     // expects email and password fields to be set in the body of the post request
     // sends a success message to caller on success, or a failure status code on failure
     public register(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const user: UserModel = new UserModel(SecurityController.generateUniqueID(), req.body.email, req.body.username, req.body.password);
-        //console.log("ARE YOU WORKING!!!!!");
+        const user: UserModel = new UserModel(req.body.email, req.body.username, req.body.password);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then((userRecord: any) => {
-                console.log("logged on or something");
                 if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "User Exists" }).end(); }
                 SecurityController.db.addRecord(SecurityController.usersTable, user.toObject()).then((result: boolean) => res.send({ fn: "register", status: "success" }).end())
                     .catch((reason) => res.sendStatus(500).end());

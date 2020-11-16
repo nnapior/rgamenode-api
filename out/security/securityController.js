@@ -33,11 +33,9 @@ var SecurityController = /** @class */ (function () {
     // expects email and password fields to be set in the body of the post request
     // sends a success message to caller on success, or a failure status code on failure
     SecurityController.prototype.register = function (req, res, next) {
-        var user = new userModel_1.UserModel(SecurityController.generateUniqueID(), req.body.email, req.body.username, req.body.password);
-        //console.log("ARE YOU WORKING!!!!!");
+        var user = new userModel_1.UserModel(req.body.email, req.body.username, req.body.password);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then(function (userRecord) {
-            console.log("logged on or something");
             if (userRecord) {
                 return res.status(400).send({ fn: "register", status: "failure", data: "User Exists" }).end();
             }
