@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var MongoDB_1 = require("../common/MongoDB");
 var config_1 = require("../config");
 var gameModel_1 = require("./gameModel");
-// This is just an example of a second controller attached to the security module
+// Yup, it's time
 var GameController = /** @class */ (function () {
     function GameController() {
     }
@@ -20,7 +20,8 @@ var GameController = /** @class */ (function () {
     GameController.prototype.addGame = function (req, res) {
         var proj = new gameModel_1.GameModel();
         proj.name = req.body.name || "Untitled";
-        proj.owner = req.body.authUser.userID;
+        proj.creator = req.body.authUser._id;
+        proj.owner = req.body.authUser._id;
         GameController.db.addRecord(GameController.gamesTable, proj.toObject())
             .then(function (result) { return res.send({ fn: "addGame", status: "success" }).end(); })
             .catch(function (reason) { return res.status(500).send(reason).end(); });
@@ -30,14 +31,16 @@ var GameController = /** @class */ (function () {
     GameController.prototype.updateGame = function (req, res) {
         var id = MongoDB_1.Database.stringToId(req.params.id);
         var data = req.body;
-        var owner = data.authUser.userID;
-        delete data.authUser;
-        GameController.db.updateRecord(GameController.gamesTable, { _id: id, owner: owner }, { $set: req.body })
-            .then(function (results) { return results ? (res.send({ fn: "updateGame", status: "success" })) : (res.send({ fn: "updateGame", status: "failure", data: "Not found" })).end(); })
+        var owner = data.authUser._id;
+        var changing = {};
+        if (data.name)
+            changing.name = data.name;
+        GameController.db.updateRecord(GameController.gamesTable, { _id: id, owner: owner }, { $set: changing })
+            .then(function (results) { return results ? (res.send({ fn: "updateGame", status: "success" })) : (res.send({ fn: "updateGame", status: "failure", data: "Not found or not owned" })).end(); })
             .catch(function (err) { return res.send({ fn: "updateGame", status: "failure", data: err }).end(); });
     };
     // deleteGame
-    // deletes the game int he database with id :id
+    // deletes the game in the database with id :id
     GameController.prototype.deleteGame = function (req, res) {
         var id = MongoDB_1.Database.stringToId(req.params.id);
         GameController.db.deleteRecord(GameController.gamesTable, { _id: id })
