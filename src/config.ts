@@ -4,4 +4,5 @@ export const Config={
     secret: process.env.SECRET || "some-secret-goes-here",
     tokenLife: 1800,
     url: process.env.MONGOURL || "mongodb://localhost:27017/"    
+    //mongodb://localhost:27017/
 };

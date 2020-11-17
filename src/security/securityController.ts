@@ -13,9 +13,10 @@ export class SecurityController {
 
     // login - POST
     // expects email and password fields to be set in the body of the post request
+    // you can login with either email or username
     // sends a token to the caller on success, 401 on failure
     public login(req: express.Request, res: express.Response, next: express.NextFunction) {
-        SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
+        SecurityController.db.getOneRecord(SecurityController.usersTable, { $or: [{ email: req.body.login},{username: req.body.login}]})
             .then((userRecord: any) => {
                 if (!userRecord) { return res.sendStatus(401).end(); }
                 const usr: UserModel = UserModel.fromObject(userRecord);
@@ -62,8 +63,4 @@ export class SecurityController {
         }).catch((err) => res.send({ fn: "changePwd", status: "failure", data: err }).end());
     }
     */
-    public static generateUniqueID() : string {
-        
-        return uuidv4();
-    }
 }
