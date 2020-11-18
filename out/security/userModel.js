@@ -14,7 +14,7 @@ var UserModel = /** @class */ (function () {
         this._password = "";
         this._id = "";
         // includes encrypted password
-        this.toObject = function () { return ({ email: _this.email, username: _this.username, password: _this.password, _id: _this._id }); };
+        this.toObject = function () { return ({ email: _this.email, username: _this.username, password: _this.password }); };
         this.email = email;
         this.username = username;
         this.password = password;

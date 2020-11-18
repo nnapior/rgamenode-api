@@ -26,13 +26,16 @@ var SecurityController = /** @class */ (function () {
                 return res.sendStatus(401).end();
             }
             var token = jsonwebtoken_1.default.sign(usr.toObject(), config_1.Config.secret, { expiresIn: config_1.Config.tokenLife });
-            res.send({ fn: "login", status: "success", data: { token: token, user: { userID: req.body.userID } } }).end();
+            res.send({ fn: "login", status: "success", data: { token: token, userID: userRecord._id } }).end();
         }).catch(function (err) { return res.sendStatus(500).end(); });
     };
     // register - POST
     // expects email and password fields to be set in the body of the post request
     // sends a success message to caller on success, or a failure status code on failure
     SecurityController.prototype.register = function (req, res, next) {
+        if (!req.body.email || !req.body.username || !req.body.password) {
+            return res.status(400).send({ fn: "register", status: "failure", data: "Email, username, or password not included" }).end();
+        }
         var user = new userModel_1.UserModel(req.body.email, req.body.username, req.body.password);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then(function (userRecord) {

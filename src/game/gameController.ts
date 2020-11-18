@@ -20,10 +20,10 @@ export class GameController {
     // adds the game to the database
     public addGame(req: express.Request, res: express.Response) {
 		const proj: GameModel = new GameModel();
+		console.log(req);
 		proj.name = req.body.name || "Untitled";
 		proj.creator = req.body.authUser._id;
 		proj.owner = req.body.authUser._id;
-
         GameController.db.addRecord(GameController.gamesTable, proj.toObject())
             .then((result: boolean) => res.send({ fn: "addGame", status: "success" }).end())
             .catch((reason) => res.status(500).send(reason).end());
