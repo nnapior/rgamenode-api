@@ -40,7 +40,7 @@ export class UserModel {
     }
 
     // includes encrypted password
-    public toObject = (): any => ({email: this.email, username: this.username, password: this.password,_id:this._id});
+    public toObject = (): any => ({email: this.email, username: this.username, password: this.password});
 
     // compares unencrypted password to encrypted password
     public validatePassword(password: string): boolean {

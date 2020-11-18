@@ -19,6 +19,7 @@ var GameController = /** @class */ (function () {
     // adds the game to the database
     GameController.prototype.addGame = function (req, res) {
         var proj = new gameModel_1.GameModel();
+        console.log(req);
         proj.name = req.body.name || "Untitled";
         proj.creator = req.body.authUser._id;
         proj.owner = req.body.authUser._id;

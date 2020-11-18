@@ -22,7 +22,7 @@ export class SecurityController {
                 const usr: UserModel = UserModel.fromObject(userRecord);
                 if (!usr.validatePassword(req.body.password)) { return res.sendStatus(401).end(); }
                 const token = jwt.sign(usr.toObject(), Config.secret, { expiresIn: Config.tokenLife });
-                res.send({ fn: "login", status: "success", data: { token, user: {userID: req.body.userID} } }).end();
+                res.send({ fn: "login", status: "success", data: { token, userID: userRecord._id } }).end();
             }).catch((err) => res.sendStatus(500).end());
     }
 
@@ -30,10 +30,19 @@ export class SecurityController {
     // expects email and password fields to be set in the body of the post request
     // sends a success message to caller on success, or a failure status code on failure
     public register(req: express.Request, res: express.Response, next: express.NextFunction) {
-        const user: UserModel = new UserModel(req.body.email, req.body.username, req.body.password);
+		/*var miscError:String = "";
+		if (!req.body.email || !req.body.username || !req.body.password) {
+			
+		} else if (!req.body.includes("@")) {
+
+		}
+		if (miscError.length > 1) {
+			return res.status(400).send({ fn: "register", status: "failure", data: miscError }).end()
+		}*/
+		const user: UserModel = new UserModel(req.body.email, req.body.username, req.body.password);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
             .then((userRecord: any) => {
-                if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "User Exists" }).end(); }
+                if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "User already exists" }).end(); }
                 SecurityController.db.addRecord(SecurityController.usersTable, user.toObject()).then((result: boolean) => res.send({ fn: "register", status: "success" }).end())
                     .catch((reason) => res.sendStatus(500).end());
             }).catch((reason) => res.sendStatus(500).end());
