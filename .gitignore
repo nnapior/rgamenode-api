@@ -1,7 +1,7 @@
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,node
-
+src/config.ts
 ### Linux ###
 *~
 
@@ -131,6 +131,7 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+out
 
 # Gatsby files
 .cache/
