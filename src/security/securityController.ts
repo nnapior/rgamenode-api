@@ -13,16 +13,15 @@ export class SecurityController {
 
     // login - POST
     // expects email and password fields to be set in the body of the post request
-    // you can login with either email or username
     // sends a token to the caller on success, 401 on failure
     public login(req: express.Request, res: express.Response, next: express.NextFunction) {
-        SecurityController.db.getOneRecord(SecurityController.usersTable, { $or: [{ email: req.body.login},{username: req.body.login}]})
+        SecurityController.db.getOneRecord(SecurityController.usersTable, {$or: [{email: req.body.login}, {username: req.body.login}]})
             .then((userRecord: any) => {
                 if (!userRecord) { return res.sendStatus(401).end(); }
                 const usr: UserModel = UserModel.fromObject(userRecord);
                 if (!usr.validatePassword(req.body.password)) { return res.sendStatus(401).end(); }
                 const token = jwt.sign(usr.toObject(), Config.secret, { expiresIn: Config.tokenLife });
-                res.send({ fn: "login", status: "success", data: { token, userID: userRecord._id } }).end();
+                res.send({ fn: "login", status: "success", data: { token, userID: userRecord._id, user:usr.toObject()} }).end();
             }).catch((err) => res.sendStatus(500).end());
     }
 
@@ -30,20 +29,25 @@ export class SecurityController {
     // expects email and password fields to be set in the body of the post request
     // sends a success message to caller on success, or a failure status code on failure
     public register(req: express.Request, res: express.Response, next: express.NextFunction) {
-		/*var miscError:String = "";
-		if (!req.body.email || !req.body.username || !req.body.password) {
-			
-		} else if (!req.body.includes("@")) {
-
-		}
+		var miscError:String = "";
+		if (!req.body.email)
+			miscError = "No email";
+		else if (!req.body.username)
+			miscError = "No username";
+		else if (!req.body.password)
+			miscError = "No password";
+		else if (!req.body.email.includes("@"))
+			miscError = "Email does not include @";
+		else if (req.body.username.includes("@"))
+			miscError = "Username includes @";
 		if (miscError.length > 1) {
 			return res.status(400).send({ fn: "register", status: "failure", data: miscError }).end()
-		}*/
+		}
 		const user: UserModel = new UserModel(req.body.email, req.body.username, req.body.password);
-        SecurityController.db.getOneRecord(SecurityController.usersTable, { email: req.body.email })
+        SecurityController.db.getOneRecord(SecurityController.usersTable, {$or: [{email: req.body.email}, {username: req.body.username}]})
             .then((userRecord: any) => {
-                if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "User already exists" }).end(); }
-                SecurityController.db.addRecord(SecurityController.usersTable, user.toObject()).then((result: boolean) => res.send({ fn: "register", status: "success" }).end())
+                if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "Username or email already exists" }).end(); }
+                SecurityController.db.addRecord(SecurityController.usersTable, user.toObjectToSave()).then((result: boolean) => res.send({fn:"register", status:"success"}).end())
                     .catch((reason) => res.sendStatus(500).end());
             }).catch((reason) => res.sendStatus(500).end());
     }
@@ -72,4 +76,8 @@ export class SecurityController {
         }).catch((err) => res.send({ fn: "changePwd", status: "failure", data: err }).end());
     }
     */
+    public static generateUniqueID() : string {
+        
+        return uuidv4();
+    }
 }

@@ -1,5 +1,8 @@
 # ignoring config file
 src/config.ts
+out
+out/
+out/*
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,node
@@ -133,6 +136,7 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
+out
 
 # Gatsby files
 .cache/
