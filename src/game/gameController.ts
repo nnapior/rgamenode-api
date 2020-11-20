@@ -20,7 +20,7 @@ export class GameController {
     // adds the game to the database
     public addGame(req: express.Request, res: express.Response) {
 		const proj: GameModel = new GameModel();
-		console.log(req);
+		console.log(req.body);
 		proj.name = req.body.name || "Untitled";
 		proj.creator = req.body.authUser._id;
 		proj.owner = req.body.authUser._id;
