@@ -12,8 +12,9 @@ export class UserModel {
 
     // does not encrypt password, expects already encrypted password
     public static fromObject = (obj: any): UserModel => {
-        const mdl = new UserModel(obj.email, "");
+        const mdl = new UserModel(obj.email, obj.username, "");
         mdl._password = obj.password;
+        mdl._id=obj._id;
         return mdl;
     }
 
@@ -26,18 +27,20 @@ export class UserModel {
             return "*";
         }
     }
-    public id ?= "";
     public email = "";
+    public username = "";
     private _password = "";
+    public _id="";
 
     // encrypts password
-    public constructor(email: string, password: string) {
+    public constructor(email: string, username: string, password: string) {
         this.email = email;
+        this.username = username;
         this.password = password;
     }
 
     // includes encrypted password
-    public toObject = (): any => ({email: this.email, password: this.password});
+    public toObject = (): any => ({email: this.email, username: this.username, password: this.password});
 
     // compares unencrypted password to encrypted password
     public validatePassword(password: string): boolean {
