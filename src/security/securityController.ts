@@ -60,6 +60,12 @@ export class SecurityController {
         console.log();
         res.send({ fn: "authorize", status: "success", data: {userID: req.body.authUser.userID} }).end();
     }
+    public getPublic(req: express.Request, res: express.Response) {
+        const id = Database.stringToId(req.params.id);
+        SecurityController.db.getOneRecord(SecurityController.usersTable, { _id: id})
+            .then((results) => res.send({ fn: "getPublic", status: "success", data: {id : results._id , username : results.username} }).end())
+            .catch((reason) => res.status(500).send(reason).end());
+    }
     /*
     // changePwd - POST
     // changes the password of the user represented in the token.  Expects password in the body of the POST

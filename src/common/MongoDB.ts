@@ -1,5 +1,5 @@
 import { FilterQuery, MongoClient, ObjectID } from "mongodb";
-/*Wrapper class for accessing Mongo Databse*/
+/*Wrapper class for accessing Mongo Database*/
 
 export class Database {
 
