@@ -14,5 +14,6 @@ export class SecurityRouter extends AppRouter {
         this.expressRouter.post("/login", securityController.login);
         this.expressRouter.post("/register", securityController.register);
         //this.expressRouter.post("/changepwd", [SecurityMiddleware.RequireAuth], securityController.changePwd);
+        this.expressRouter.get("/public/:id", securityController.getPublic);
     }
 }

@@ -23,7 +23,12 @@ export class GameController {
 		console.log(req.body);
 		proj.name = req.body.name || "Untitled";
 		proj.creator = req.body.authUser._id;
-		proj.owner = req.body.authUser._id;
+        proj.owner = req.body.authUser._id;
+        proj.credits = [{
+            id : req.body.authUser._id,
+            //username : req.body.authUser.username,
+            credit : "creator"
+        }];
         GameController.db.addRecord(GameController.gamesTable, proj.toObject())
             .then((result: boolean) => res.send({ fn: "addGame", status: "success" }).end())
             .catch((reason) => res.status(500).send(reason).end());
@@ -36,8 +41,12 @@ export class GameController {
 		const data = req.body;
 		const owner = data.authUser._id;
 		const changing:any = {};
-		if (data.name)
-			changing.name = data.name;
+		if (data.name) {
+            changing.name = data.name;
+        }
+        if (data.tags) {
+            changing.tags = data.tags;
+        }
         GameController.db.updateRecord(GameController.gamesTable, { _id: id , owner: owner}, { $set: changing })
             .then((results) => results ? (res.send({ fn: "updateGame", status: "success" })) : (res.send({ fn: "updateGame", status: "failure", data: "Not found or not owned" })).end())
             .catch((err) => res.send({ fn: "updateGame", status: "failure", data: err }).end());
