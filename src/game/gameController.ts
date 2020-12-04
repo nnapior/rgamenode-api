@@ -2,6 +2,8 @@ import express, { RequestHandler } from "express";
 import { Database } from "../common/MongoDB";
 import { Config } from "../config";
 import { GameModel } from "./gameModel";
+import fs from "fs";
+import unzipper from "unzipper";
 // Yup, it's time
 
 export class GameController {
@@ -59,5 +61,20 @@ export class GameController {
         GameController.db.deleteRecord(GameController.gamesTable, { _id: id })
             .then((results) => results ? (res.send({ fn: "deleteGame", status: "success" })) : (res.send({ fn: "deleteGame", status: "failure", data: "Not found" })).end())
             .catch((reason) => res.status(500).send(reason).end());
+	}
+	
+    public uploadFiles(req: express.Request, res: express.Response) {
+		const gameID = req.params.id;
+		fs.createReadStream("uploads/"+gameID+".zip")
+			.pipe(unzipper.Parse())
+			.on('entry', function (entry) {
+				const fileName = entry.path;
+				const type = entry.type; // 'Directory' or 'File'
+				const size = entry.vars.uncompressedSize; // There is also compressedSize;
+				console.log(fileName);
+				//TODO actually put the files into the correct place
+				//entry.pipe(fs.createWriteStream("gamefiles/"+gameID+"/"+fileName));
+			});
+        res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
     }
 }

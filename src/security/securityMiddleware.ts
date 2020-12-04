@@ -18,7 +18,7 @@ export class SecurityMiddleware {
             try {
                 // if can verify the token, set req.user and pass to next middleware
 				const decoded = jwt.verify(token.toString(), Config.secret);
-				console.log(decoded);
+				//console.log(decoded);//uncomment this if you're having problems
                 req.body.authUser = decoded;
                 next();
             } catch (ex) {
