@@ -64,17 +64,9 @@ export class GameController {
 	}
 	
     public uploadFiles(req: express.Request, res: express.Response) {
-		const gameID = req.params.id;
-		fs.createReadStream("uploads/"+gameID+".zip")
-			.pipe(unzipper.Parse())
-			.on('entry', function (entry) {
-				const fileName = entry.path;
-				const type = entry.type; // 'Directory' or 'File'
-				const size = entry.vars.uncompressedSize; // There is also compressedSize;
-				console.log(fileName);
-				//TODO actually put the files into the correct place
-				//entry.pipe(fs.createWriteStream("gamefiles/"+gameID+"/"+fileName));
-			});
+        const gameID = req.params.id;
+        fs.createReadStream("uploads/"+gameID+".zip")
+        .pipe(unzipper.Extract({ path: "gamefiles/"+gameID }));
         res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
     }
 }
