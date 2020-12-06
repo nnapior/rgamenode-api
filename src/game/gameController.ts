@@ -21,13 +21,14 @@ export class GameController {
     // addGame
     // adds the game to the database
     public addGame(req: express.Request, res: express.Response) {
-		const proj: GameModel = new GameModel();
-		console.log(req.body);
-		proj.name = req.body.name || "Untitled";
-		proj.creator = req.body.userID;
-        proj.owner = req.body.userID;
+		    const proj: GameModel = new GameModel();
+  		  console.log(req.body);
+  		  proj.name = req.body.name || "Untitled";
+        proj.description = req.body.description;
+  		  proj.creator = req.body.user._id;
+        proj.owner = req.body.user._id;
         proj.credits = [{
-            id : req.body.userID,
+            id : req.body.user._id,
             //username : req.body.authUser.username,
             credit : "creator"
         }];
