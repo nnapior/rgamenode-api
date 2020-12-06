@@ -57,8 +57,8 @@ export class SecurityController {
     // returns the users userID on success
     public authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
         // validate that req.authUser exists, if so, return the user's userID address.
-        console.log();
-        res.send({ fn: "authorize", status: "success", data: {userID: req.body.authUser.userID} }).end();
+        console.log(`authorized ${req.body.authUser._id}`);
+        res.send({ fn: "authorize", status: "success", data: {userID: req.body.authUser._id, username: req.body.authUser.username, email: req.body.authUser.email} }).end();
     }
     public getPublic(req: express.Request, res: express.Response) {
         const id = Database.stringToId(req.params.id);
@@ -83,7 +83,7 @@ export class SecurityController {
     }
     */
     public static generateUniqueID() : string {
-        
+
         return uuidv4();
     }
 }
