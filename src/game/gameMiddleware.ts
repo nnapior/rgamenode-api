@@ -7,10 +7,10 @@ import { GameController } from "./gameController";
 
 export class GameMiddleware {
 
-    // Returns a method that validates a bearer token, on success, populates authUser in the body with the user information from the token,
-    // then calls the next function in the chain (the controller).  On failure to authenticate, halts execution and sends error response
-    static get GameAuth(): RequestHandler {
-        return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+	// Returns a method that validates a bearer token, on success, populates authUser in the body with the user information from the token,
+	// then calls the next function in the chain (the controller).  On failure to authenticate, halts execution and sends error response
+	static get GameAuth(): RequestHandler {
+		return (req: express.Request, res: express.Response, next: express.NextFunction) => {
 			var gameID = Database.stringToId(req.params.id);
 			//console.log(gameID);
 			//console.log(GameController.gamesTable);
@@ -28,5 +28,5 @@ export class GameMiddleware {
 				})
 				.catch((err) => res.send({ fn: "GameAuth", status: "failure", data: err }).end());
 		};
-    }
+	}
 }
