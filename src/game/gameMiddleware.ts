@@ -12,7 +12,8 @@ export class GameMiddleware {
     static get GameAuth(): RequestHandler {
         return (req: express.Request, res: express.Response, next: express.NextFunction) => {
 			var gameID = Database.stringToId(req.params.id);
-			console.log(gameID);
+			//console.log(gameID);
+			//console.log(GameController.gamesTable);
 			var rec = GameController.db.getOneRecord(GameController.gamesTable, { _id: gameID })
 				.then((results) => {
 					if (!results) {

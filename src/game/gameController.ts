@@ -2,8 +2,8 @@ import express, { RequestHandler } from "express";
 import { Database } from "../common/MongoDB";
 import { Config } from "../config";
 import { GameModel } from "./gameModel";
-import fs from "fs";
-import unzipper from "unzipper";
+//import fs from "fs";
+//import unzipper from "unzipper";
 // Yup, it's time
 
 export class GameController {
@@ -33,7 +33,10 @@ export class GameController {
             credit : "creator"
         }];
         GameController.db.addRecord(GameController.gamesTable, proj.toObject())
-            .then((result: boolean) => res.send({ fn: "addGame", status: "success" }).end())
+            .then((result: any) => {
+				//console.log(result);
+				res.send({ fn: "addGame", status: "success", data: result}).end()
+			})
             .catch((reason) => res.status(500).send(reason).end());
     }
 

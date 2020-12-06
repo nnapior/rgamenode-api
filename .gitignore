@@ -3,6 +3,8 @@ src/config.ts
 out
 out/
 out/*
+uploads
+gamefiles
 
 # Created by https://www.toptal.com/developers/gitignore/api/macos,windows,linux,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,linux,node
