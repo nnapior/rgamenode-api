@@ -31,10 +31,10 @@ export class GameController {
   		  console.log(req.body);
   		  proj.name = req.body.name || "Untitled";
 		proj.description = req.body.description;
-  		  proj.creator = req.body.user._id;
-		proj.owner = req.body.user._id;
+  		  proj.creator = req.body.authUser._id;
+		proj.owner = req.body.authUser._id;
 		proj.credits = [{
-			id : req.body.user._id,
+			id : req.body.authUser._id,
 			//username : req.body.authUser.username,
 			credit : "creator"
 		}];
