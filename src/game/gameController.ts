@@ -21,13 +21,14 @@ export class GameController {
     // addGame
     // adds the game to the database
     public addGame(req: express.Request, res: express.Response) {
-		const proj: GameModel = new GameModel();
-		console.log(req.body);
-		proj.name = req.body.name || "Untitled";
-		proj.creator = req.body.authUser._id;
-        proj.owner = req.body.authUser._id;
+		    const proj: GameModel = new GameModel();
+  		  console.log(req.body);
+  		  proj.name = req.body.name || "Untitled";
+        proj.description = req.body.description;
+  		  proj.creator = req.body.user._id;
+        proj.owner = req.body.user._id;
         proj.credits = [{
-            id : req.body.authUser._id,
+            id : req.body.user._id,
             //username : req.body.authUser.username,
             credit : "creator"
         }];
@@ -44,7 +45,7 @@ export class GameController {
     public updateGame(req: express.Request, res: express.Response) {
         const id = Database.stringToId(req.params.id);
 		const data = req.body;
-		const owner = data.authUser._id;
+		const owner = data.userID;
 		const changing:any = {};
 		if (data.name) {
             changing.name = data.name;
@@ -65,22 +66,11 @@ export class GameController {
             .then((results) => results ? (res.send({ fn: "deleteGame", status: "success" })) : (res.send({ fn: "deleteGame", status: "failure", data: "Not found" })).end())
             .catch((reason) => res.status(500).send(reason).end());
 	}
-	
+
     public uploadFiles(req: express.Request, res: express.Response) {
-		const gameID = req.params.id;
-		/*fs.createReadStream("uploads/"+gameID+".zip")
-			.pipe(unzipper.Parse())
-			.on('entry', function (entry) {
-				const fileName = entry.path;
-				const type = entry.type; // 'Directory' or 'File'
-				const size = entry.vars.uncompressedSize; // There is also compressedSize;
-				console.log(fileName);
-				//TODO actually put the files into the correct place
-				//entry.pipe(fs.createWriteStream("gamefiles/"+gameID+"/"+fileName));
-			});*/
-		//fs.createReadStream("uploads/"+gameID+".zip").pipe(unzip.Extract({ path: "gamefiles/"+gameID }));
-		//fs.createReadStream("uploads/"+gameID+".zip")
-		//	.pipe(unzipper.Extract({ path: "gamefiles/"+gameID }));
-		res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
+        const gameID = req.params.id;
+        fs.createReadStream("uploads/"+gameID+".zip")
+        .pipe(unzipper.Extract({ path: "gamefiles/"+gameID }));
+        res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
     }
 }
