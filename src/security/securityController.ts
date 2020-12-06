@@ -51,21 +51,24 @@ export class SecurityController {
                     .catch((reason) => res.sendStatus(500).end());
             }).catch((reason) => res.sendStatus(500).end());
     }
+
     // authorize - GET
     // this code actually does nothing, but if it is secured at the route level, it will return the email address for the token that
     // was returned.  This is used to verify a token by a client application
     // returns the users userID on success
     public authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
         // validate that req.authUser exists, if so, return the user's userID address.
-        console.log();
-        res.send({ fn: "authorize", status: "success", data: {userID: req.body.authUser.userID} }).end();
+        console.log(`authorized ${req.body.user._id}`);
+        res.send({ fn: "authorize", status: "success", data: {userID: req.body.user._id, username: req.body.user.username, email: req.body.user.email} }).end();
     }
+
     public getPublic(req: express.Request, res: express.Response) {
         const id = Database.stringToId(req.params.id);
         SecurityController.db.getOneRecord(SecurityController.usersTable, { _id: id})
             .then((results) => res.send({ fn: "getPublic", status: "success", data: {id : results._id , username : results.username} }).end())
             .catch((reason) => res.status(500).send(reason).end());
     }
+
     /*
     // changePwd - POST
     // changes the password of the user represented in the token.  Expects password in the body of the POST
@@ -82,8 +85,9 @@ export class SecurityController {
         }).catch((err) => res.send({ fn: "changePwd", status: "failure", data: err }).end());
     }
     */
+
     public static generateUniqueID() : string {
-        
+
         return uuidv4();
     }
 }

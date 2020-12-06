@@ -17,9 +17,9 @@ export class SecurityMiddleware {
             if (token.includes("bearer")) { token = token.toString().substr(6).trimLeft(); }
             try {
                 // if can verify the token, set req.user and pass to next middleware
-				const decoded = jwt.verify(token.toString(), Config.secret);
-				//console.log(decoded);//uncomment this if you're having problems
-                req.body.authUser = decoded;
+				        const decoded = jwt.verify(token.toString(), Config.secret);
+				        //console.log(decoded);//uncomment this if you're having problems
+                req.body.user = decoded;
                 next();
             } catch (ex) {
                 // if invalid token
