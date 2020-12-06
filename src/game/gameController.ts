@@ -2,8 +2,8 @@ import express, { RequestHandler } from "express";
 import { Database } from "../common/MongoDB";
 import { Config } from "../config";
 import { GameModel } from "./gameModel";
-import fs from "fs";
-import unzipper from "unzipper";
+//import fs from "fs";
+//import unzipper from "unzipper";
 // Yup, it's time
 
 export class GameController {
@@ -32,7 +32,10 @@ export class GameController {
             credit : "creator"
         }];
         GameController.db.addRecord(GameController.gamesTable, proj.toObject())
-            .then((result: boolean) => res.send({ fn: "addGame", status: "success" }).end())
+            .then((result: any) => {
+				//console.log(result);
+				res.send({ fn: "addGame", status: "success", data: result}).end()
+			})
             .catch((reason) => res.status(500).send(reason).end());
     }
 
@@ -65,7 +68,7 @@ export class GameController {
 	
     public uploadFiles(req: express.Request, res: express.Response) {
 		const gameID = req.params.id;
-		fs.createReadStream("uploads/"+gameID+".zip")
+		/*fs.createReadStream("uploads/"+gameID+".zip")
 			.pipe(unzipper.Parse())
 			.on('entry', function (entry) {
 				const fileName = entry.path;
@@ -74,7 +77,10 @@ export class GameController {
 				console.log(fileName);
 				//TODO actually put the files into the correct place
 				//entry.pipe(fs.createWriteStream("gamefiles/"+gameID+"/"+fileName));
-			});
-        res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
+			});*/
+		//fs.createReadStream("uploads/"+gameID+".zip").pipe(unzip.Extract({ path: "gamefiles/"+gameID }));
+		//fs.createReadStream("uploads/"+gameID+".zip")
+		//	.pipe(unzipper.Extract({ path: "gamefiles/"+gameID }));
+		res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
     }
 }
