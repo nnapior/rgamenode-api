@@ -24,10 +24,10 @@ export class GameController {
 		const proj: GameModel = new GameModel();
 		console.log(req.body);
 		proj.name = req.body.name || "Untitled";
-		proj.creator = req.body.authUser._id;
-        proj.owner = req.body.authUser._id;
+		proj.creator = req.body.userID;
+        proj.owner = req.body.userID;
         proj.credits = [{
-            id : req.body.authUser._id,
+            id : req.body.userID,
             //username : req.body.authUser.username,
             credit : "creator"
         }];
@@ -41,7 +41,7 @@ export class GameController {
     public updateGame(req: express.Request, res: express.Response) {
         const id = Database.stringToId(req.params.id);
 		const data = req.body;
-		const owner = data.authUser._id;
+		const owner = data.userID;
 		const changing:any = {};
 		if (data.name) {
             changing.name = data.name;
@@ -62,7 +62,7 @@ export class GameController {
             .then((results) => results ? (res.send({ fn: "deleteGame", status: "success" })) : (res.send({ fn: "deleteGame", status: "failure", data: "Not found" })).end())
             .catch((reason) => res.status(500).send(reason).end());
 	}
-	
+
     public uploadFiles(req: express.Request, res: express.Response) {
         const gameID = req.params.id;
         fs.createReadStream("uploads/"+gameID+".zip")
