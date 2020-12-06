@@ -17,14 +17,14 @@ export class GameRouter extends AppRouter {
 		}
 	});
 	public static gameUploads = multer({storage: GameRouter.gameStorage});
-    constructor() {super(); }
+	constructor() {super(); }
 
-    // sets up the routes within this module shows an example of a route that requires authorization, and one that does not
-    public setupRoutes(): void {
+	// sets up the routes within this module shows an example of a route that requires authorization, and one that does not
+	public setupRoutes(): void {
 		this.expressRouter.get("/:id", GameRouter.projController.getGame);
-        this.expressRouter.post("/", [SecurityMiddleware.RequireAuth], GameRouter.projController.addGame);
-        this.expressRouter.put("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.updateGame);
-        //this.expressRouter.delete("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.deleteGame);
-        this.expressRouter.put("/:id/upload", SecurityMiddleware.RequireAuth, GameMiddleware.GameAuth, /*cors(), */GameRouter.gameUploads.single("file"), GameRouter.projController.uploadFiles);
-    }
+		this.expressRouter.post("/", [SecurityMiddleware.RequireAuth], GameRouter.projController.addGame);
+		this.expressRouter.put("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.updateGame);
+		//this.expressRouter.delete("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.deleteGame);
+		this.expressRouter.put("/:id/upload", SecurityMiddleware.RequireAuth, GameMiddleware.GameAuth, /*cors(), */GameRouter.gameUploads.single("file"), GameRouter.projController.uploadFiles);
+	}
 }
