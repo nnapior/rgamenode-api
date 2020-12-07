@@ -27,11 +27,11 @@ export class GameController {
 	// addGame
 	// adds the game to the database
 	public addGame(req: express.Request, res: express.Response) {
-			const proj: GameModel = new GameModel();
-  		  console.log(req.body);
-  		  proj.name = req.body.name || "Untitled";
+		const proj: GameModel = new GameModel();
+		console.log(req.body);
+		proj.name = req.body.name || "Untitled";
 		proj.description = req.body.description;
-  		  proj.creator = req.body.authUser._id;
+		proj.creator = req.body.authUser._id;
 		proj.owner = req.body.authUser._id;
 		proj.credits = [{
 			id : req.body.authUser._id,
@@ -51,13 +51,16 @@ export class GameController {
 	public updateGame(req: express.Request, res: express.Response) {
 		const id = Database.stringToId(req.params.id);
 		const data = req.body;
-		const owner = data.userID;
+		const owner = data.authUser._id;
 		const changing:any = {};
 		if (data.name) {
 			changing.name = data.name;
 		}
 		if (data.tags) {
 			changing.tags = data.tags;
+		}
+		if (data.description) {
+			changing.description = data.description;
 		}
 		GameController.db.updateRecord(GameController.gamesTable, { _id: id , owner: owner}, { $set: changing })
 			.then((results) => results ? (res.send({ fn: "updateGame", status: "success" })) : (res.send({ fn: "updateGame", status: "failure", data: "Not found or not owned" })).end())

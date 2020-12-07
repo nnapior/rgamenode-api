@@ -4,6 +4,7 @@ export class GameModel {
 	public static fromObject(object: any): GameModel {
 		const p: GameModel = new GameModel();
 		p.name = object.name;
+		p.description = object.description;
 		p.creator = object.creator;
 		p.owner = object.owner;
 		p.tags = object.tags;
@@ -20,6 +21,7 @@ export class GameModel {
 	public toObject(): any {
 		return {
 			name: this.name,
+			description: this.description,
 			creator : this.creator,
 			owner: this.owner,
 			tags: this.tags,
