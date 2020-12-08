@@ -81,5 +81,13 @@ export class GameController {
 		fs.createReadStream("uploads/"+gameID+".zip")
 		.pipe(unzipper.Extract({ path: "gamefiles/"+gameID }));
 		res.send({ fn: "uploadFiles", status: "we're trying to unzip now" });
+    }
+    
+    public uploadThumb(req: express.Request, res: express.Response) {
+		const gameID = Database.stringToId(req.params.id);
+        const ending : string = req.file.originalname.substr(req.file.originalname.lastIndexOf("."));
+		GameController.db.updateRecord(GameController.gamesTable, { _id: gameID}, { $set: {thumbname: gameID + ending} })
+			.then((results) => results ? (res.send({ fn: "uploadThumb", status: "success" })) : (res.send({ fn: "uploadThumb", status: "failure", data: "Not found or not owned" })).end())
+			.catch((err) => res.send({ fn: "uploadThumb", status: "failure", data: err }).end());
 	}
 }

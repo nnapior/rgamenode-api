@@ -16,8 +16,22 @@ export class GameRouter extends AppRouter {
 			cb(null, req.params.id+".zip");
 		}
 	});
+
+	public static thumbStorage = multer.diskStorage({
+		destination: (req, file, cb) => {
+			cb(null, "gamethumbs");
+		},
+		filename: (req, file, cb) => {
+			const ending : string = file.originalname.substr(file.originalname.lastIndexOf("."));
+			//console.log(ending);
+			cb(null, req.params.id+ending);
+		}
+	});
+
 	public static gameUploads = multer({storage: GameRouter.gameStorage});
+	public static gameThumbs = multer({storage: GameRouter.thumbStorage});
 	constructor() {super(); }
+	
 
 	// sets up the routes within this module shows an example of a route that requires authorization, and one that does not
 	public setupRoutes(): void {
@@ -26,5 +40,6 @@ export class GameRouter extends AppRouter {
 		this.expressRouter.put("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.updateGame);
 		//this.expressRouter.delete("/:id", [SecurityMiddleware.RequireAuth], GameRouter.projController.deleteGame);
 		this.expressRouter.put("/:id/upload", SecurityMiddleware.RequireAuth, GameMiddleware.GameAuth, /*cors(), */GameRouter.gameUploads.single("file"), GameRouter.projController.uploadFiles);
+		this.expressRouter.put("/:id/thumb", SecurityMiddleware.RequireAuth, GameMiddleware.GameAuth, GameRouter.gameThumbs.single("file"), GameRouter.projController.uploadThumb);
 	}
 }

@@ -19,7 +19,7 @@ export class GameMiddleware {
 					if (!results) {
 						res.send({ fn: "GameAuth", status: "failure", data: "Game not found." }).end();
 					} else if (results.owner == req.body.authUser._id) {
-						//req.body.gameData = results;
+						req.body.authGame = results;
 						//res.send({ fn: "GameAuth", status: "success" });
 						next();
 					} else {
