@@ -47,7 +47,8 @@ export class SecurityController {
 		SecurityController.db.getOneRecord(SecurityController.usersTable, {$or: [{email: req.body.email}, {username: req.body.username}]})
 			.then((userRecord: any) => {
 				if (userRecord) { return res.status(400).send({ fn: "register", status: "failure", data: "Username or email already exists" }).end(); }
-				SecurityController.db.addRecord(SecurityController.usersTable, user.toObjectToSave()).then((result: any) => res.send({fn:"register", status:"success"}).end())
+				SecurityController.db.addRecord(SecurityController.usersTable, user.toObjectToSave())
+					.then((result: any) => res.send({fn:"register", status:"success"}).end())
 					.catch((reason) => res.sendStatus(500).end());
 			}).catch((reason) => res.sendStatus(500).end());
 	}
